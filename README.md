@@ -1,2 +1,2 @@
 # JavaGameEngine
-An ECS game engine written in LWJGL using OpenGL 3.2
+An ECS game engine written in LWJGL using OpenGL
