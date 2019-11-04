@@ -24,6 +24,7 @@ public class Logger {
 	 * @param statement String statement to be logged
 	 */
 	public static void LOG(String statement) {
+		if (statement.length() == 0) return;
 		String s = LocalDateTime.now() + " " + statement;
 		out.println(s);
 		System.out.println(s);
@@ -35,6 +36,7 @@ public class Logger {
 	 * @param error String error to be logged
 	 */
 	public static void ERROR(String error) {
+		if (error.length() == 0) return;
 		String s = LocalDateTime.now() + " (ERROR): " + error;
 		out.println(s);
 		System.out.println(s);

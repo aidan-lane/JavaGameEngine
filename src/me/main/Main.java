@@ -5,6 +5,8 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import me.graphics.ShaderProgram;
+
 import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -24,7 +26,8 @@ public class Main {
 		loop();
 		
 		glfwFreeCallbacks(window);
-		// glfwSetErrorCallback(null).free();
+		
+		Logger.close();
 	}
 	
 	private void init() {
@@ -69,8 +72,20 @@ public class Main {
 		
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 		
+		ShaderProgram p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
+		
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			// test render
+			p.use();
+			p.setUniform();
+			glBegin(GL_QUADS);
+				glVertex2f(-0.5f, 0.5f);
+				glVertex2f(0.5f, 0.5f);
+				glVertex2f(0.5f, -0.5f);
+				glVertex2f(-0.5f, -0.5f);
+			glEnd();
 			
 			glfwSwapBuffers(window);
 			
@@ -80,6 +95,8 @@ public class Main {
 	
 	public static void main(String[] args) {
 		new Main().run();
+		@SuppressWarnings("unused")
+		Logger logger = new Logger();
 	}
 
 }

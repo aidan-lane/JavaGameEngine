@@ -1,6 +1,9 @@
 package me.graphics;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL33.*;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import me.main.Logger;
 
@@ -20,8 +23,8 @@ public class ShaderProgram {
 		vShader = glCreateShader(GL_VERTEX_SHADER);
 		fShader = glCreateShader(GL_FRAGMENT_SHADER);
 		
-		glShaderSource(vShader, vSource);
-		glShaderSource(fShader, fSource);
+		glShaderSource(vShader, loadFile(vSource));
+		glShaderSource(fShader, loadFile(fSource));
 		
 		glCompileShader(vShader);
 		glCompileShader(fShader);
@@ -47,5 +50,33 @@ public class ShaderProgram {
 	 */
 	public void use() {
 		glUseProgram(program);
+	}
+	
+	public void setUniform() {
+		int loc = glGetUniformLocation(program, "uColor");
+		if(loc != -1)
+			glUniform3f(loc, 1.0f, 0.0f, 1.0f);
+	}
+	
+	/**
+	 * Given a filename, will return as formatted String
+	 * 
+	 * @param filename path of shader source
+	 * @return a String of the file's contents
+	 */
+	private String loadFile(String filename) {
+		StringBuilder code = new StringBuilder();
+		String line = null;
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(filename));
+			while ((line = reader.readLine()) != null) {
+				code.append(line);
+				code.append("\n");
+			}
+			reader.close();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Unable to load shader from ["+filename+"]", e);
+		}
+		return code.toString();
 	}
 }
