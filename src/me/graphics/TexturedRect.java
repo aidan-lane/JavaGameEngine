@@ -2,10 +2,15 @@ package me.graphics;
 
 public class TexturedRect {
 
-	private int x;
-	private int y;
+	private float x;
+	private float y;
+	private int width;
+	private int height;
 	
-	public TexturedRect(int x, int y, int w, int h) {
-		
+	public TexturedRect(float x, float y, int w, int h) {
+		this.x = x;
+		this.y = y;
+		this.width = w;
+		this.height = h;
 	}
 }
