@@ -6,6 +6,8 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import me.graphics.ShaderProgram;
+import me.graphics.TexturedRect;
+import me.graphics.uniforms.Uniform3f;
 
 import java.nio.*;
 
@@ -71,6 +73,9 @@ public class Main {
 		GL.createCapabilities();
 		
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+		glOrtho(0.f, 1280, 720, 0.f, 0.f, 1.f);
+		
+		TexturedRect r = new TexturedRect(50, 50, 100, 100);
 		
 		ShaderProgram p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
 		
@@ -79,13 +84,9 @@ public class Main {
 			
 			// test render
 			p.use();
-			p.setUniform();
-			glBegin(GL_QUADS);
-				glVertex2f(-0.5f, 0.5f);
-				glVertex2f(0.5f, 0.5f);
-				glVertex2f(0.5f, -0.5f);
-				glVertex2f(-0.5f, -0.5f);
-			glEnd();
+			p.setUniform("uColor", new Uniform3f(0.0f, 0.0f, 1.0f));
+			r.render();
+			p.unbind();
 			
 			glfwSwapBuffers(window);
 			

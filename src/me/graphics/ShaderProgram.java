@@ -1,10 +1,11 @@
 package me.graphics;
 
-import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import me.graphics.uniforms.Uniform;
 import me.main.Logger;
 
 public class ShaderProgram {
@@ -52,10 +53,15 @@ public class ShaderProgram {
 		glUseProgram(program);
 	}
 	
-	public void setUniform() {
-		int loc = glGetUniformLocation(program, "uColor");
-		if(loc != -1)
-			glUniform3f(loc, 1.0f, 0.0f, 1.0f);
+	public void unbind() {
+		glUseProgram(0);
+	}
+	
+	public void setUniform(String name, Uniform u) {
+		int loc = glGetUniformLocation(program, name);
+		if(loc == -1)
+			throw new RuntimeException("Uniform " + name + " does not exist in shader program: " + this.program);
+		u.setUniform(loc);
 	}
 	
 	/**
