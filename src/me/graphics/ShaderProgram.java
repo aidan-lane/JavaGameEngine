@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL20.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import me.graphics.uniforms.Uniform;
 import me.main.Logger;
 
 public class ShaderProgram {
@@ -57,11 +56,27 @@ public class ShaderProgram {
 		glUseProgram(0);
 	}
 	
-	public void setUniform(String name, Uniform u) {
-		int loc = glGetUniformLocation(program, name);
+	private int getUniformLocation(String name) {
+		int loc = glGetUniformLocation(this.program, name);
 		if(loc == -1)
 			throw new RuntimeException("Uniform " + name + " does not exist in shader program: " + this.program);
-		u.setUniform(loc);
+		return loc;
+	}
+	
+	public void setUniform(String name, float a) {
+		glUniform1f(getUniformLocation(name), a);
+	}
+	
+	public void setUniform(String name, float a, float b) {
+		glUniform2f(getUniformLocation(name), a, b);
+	}
+	
+	public void setUniform(String name, float a, float b, float c) {
+		glUniform3f(getUniformLocation(name), a, b, c);
+	}
+	
+	public void setUniform(String name, float a, float b, float c, float d) {
+		glUniform4f(getUniformLocation(name), a, b, c, d);
 	}
 	
 	/**

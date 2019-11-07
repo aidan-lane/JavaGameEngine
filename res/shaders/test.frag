@@ -1,9 +1,7 @@
-#version 330 core
-out vec4 FragColor;
+#version 120 core
 
-in vec4 vertexColor; // the input variable from the vertex shader (same name and same type)
+in vec4 vertColor;
 
-void main()
-{
-    FragColor = vertexColor;
+void main(){
+    gl_FragColor = vertColor;
 }

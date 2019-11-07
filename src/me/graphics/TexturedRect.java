@@ -2,29 +2,30 @@ package me.graphics;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class TexturedRect {
-
-	private float x;
-	private float y;
-	private float width;
-	private float height;
+public class TexturedRect extends Rect {
 	
-	public TexturedRect(float x, float y, float w, float h) {
-		this.x = x;
-		this.y = y;
-		this.width = w;
-		this.height = h;
+	private int textureID;
+	
+	public TexturedRect(float x, float y, float w, float h, int tex) {
+		super(x, y, w, h);
+		this.textureID = tex;
 	}
 	
-	public TexturedRect(float w, float h) {
-		this(0, 0, w, h);
-	}
-	
+	@Override
 	public void render() {
+		this.render(0.0f, 0.0f, 1.0f, 1.0f);
+	}
+	
+	public void render(float t1, float t2, float t3, float t4) {
+		glBindTexture(GL_TEXTURE_2D, this.textureID);
 		glBegin(GL_QUADS);
+			glTexCoord2f(t1, t2);
 			glVertex2f(this.x, this.y);
+			glTexCoord2f(t3, t2);
 			glVertex2f(this.x + this.width, this.y);
+			glTexCoord2f(t3, t4);
 			glVertex2f(this.x + this.width, this.y + this.height);
+			glTexCoord2f(t1, t4);
 			glVertex2f(this.x, this.y + this.height);
 		glEnd();
 	}
