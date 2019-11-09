@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL20.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.lwjgl.opengl.GL20;
+
 import me.main.Logger;
 
 public class ShaderProgram {
@@ -77,6 +79,10 @@ public class ShaderProgram {
 	
 	public void setUniform(String name, float a, float b, float c, float d) {
 		glUniform4f(getUniformLocation(name), a, b, c, d);
+	}
+	
+	public void setUniform(String name, int t) {
+		GL20.glUniform1i(getUniformLocation(name), 0);
 	}
 	
 	/**

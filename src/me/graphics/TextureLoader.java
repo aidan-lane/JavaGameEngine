@@ -23,6 +23,7 @@ public class TextureLoader {
 			return ImageIO.read(new File(filename));
 		} catch (IOException e) {
 			Logger.LOG("Could not load image: " + filename);
+			e.printStackTrace();
 		}
 		return null;
 	}

@@ -5,6 +5,7 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import me.assetmanagers.TextureManager;
 import me.graphics.ShaderProgram;
 import me.graphics.TexturedRect;
 
@@ -19,6 +20,8 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Main {
 	
 	private long window;
+	
+	public static TextureManager textures = new TextureManager();
 	
 	public void run() {
 		System.out.println("Running LWJGL Version " + Version.getVersion());
@@ -55,11 +58,10 @@ public class Main {
 			glfwGetWindowSize(window, pWidth, pHeight);
 			
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			
 			glfwSetWindowPos(
 				window,
-				(vidmode.width() - pWidth.get(0) / 2),
-				(vidmode.height() - pHeight.get(0) / 2)
+				(pWidth.get(0) / 4),
+				(pHeight.get(0) / 4)
 			);
 		}
 		
@@ -72,9 +74,15 @@ public class Main {
 		GL.createCapabilities();
 		
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-		glOrtho(0.f, 1280, 720, 0.f, 0.f, 1.f);
 		
-		//TexturedRect r = new TexturedRect(50, 50, 100, 100);
+		glMatrixMode(GL_PROJECTION);
+		glOrtho(0.f, 1280, 720, 0.f, -1.f, 1.f);
+		glMatrixMode(GL_MODELVIEW);
+		
+		GL13.glActiveTexture(0); 
+		
+		int tex = Main.textures.getResource("res/test.png");
+		TexturedRect r = new TexturedRect(50, 50, 100, 100, tex);
 		
 		ShaderProgram p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
 		
@@ -83,10 +91,10 @@ public class Main {
 			
 			// test render
 			p.use();
-			p.setUniform("uColor", 0.0f, 0.0f, 0.0f);
-			//r.render();
+			p.setUniform("texture1", 0);
+			r.render();
 			p.unbind();
-			
+
 			glfwSwapBuffers(window);
 			
 			glfwPollEvents();
