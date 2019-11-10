@@ -1,7 +1,6 @@
 package me.main;
 
 import org.lwjgl.*;
-import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
@@ -17,24 +16,20 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Main {
+public class Main implements Runnable {
 	
 	private long window;
 	
 	public static TextureManager textures = new TextureManager();
 	
-	public void run() {
-		System.out.println("Running LWJGL Version " + Version.getVersion());
-		
-		init();
-		loop();
-		
-		glfwFreeCallbacks(window);
-		
-		Logger.close();
-	}
+	int tex;
+	TexturedRect r;
+	
+	ShaderProgram p;
 	
 	private void init() {
+		System.out.println("Running LWJGL Version " + Version.getVersion());
+		
 		if (!glfwInit())
 			throw new IllegalStateException("Cannot initialize GLFW");
 		
@@ -57,7 +52,7 @@ public class Main {
 			
 			glfwGetWindowSize(window, pWidth, pHeight);
 			
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			//GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 			glfwSetWindowPos(
 				window,
 				(pWidth.get(0) / 4),
@@ -70,7 +65,10 @@ public class Main {
 		glfwShowWindow(window);
 	}
 	
-	private void loop() {
+	public void run() {
+		init();
+		
+		// configure global render options
 		GL.createCapabilities();
 		
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
@@ -81,30 +79,62 @@ public class Main {
 		
 		GL13.glActiveTexture(0); 
 		
-		int tex = Main.textures.getResource("res/test.png");
-		TexturedRect r = new TexturedRect(50, 50, 100, 100, tex);
+		// testing
+		tex = Main.textures.getResource("res/test.png");
+		r = new TexturedRect(50, 50, 100, 100, tex);
+		p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
 		
-		ShaderProgram p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
+		int fps = 60;
+		double ticksPerSecond = 1000000000 / fps;
+		double delta = 0;
+		long now;
+		long lastTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		int frames = 0;
 		
 		while (!glfwWindowShouldClose(window)) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			now = System.nanoTime();
+			delta += (now - lastTime) / ticksPerSecond;
+			lastTime = now;
 			
-			// test render
-			p.use();
-			p.setUniform("texture1", 0);
-			r.render();
-			p.unbind();
-
-			glfwSwapBuffers(window);
+			while (delta >= 1) {
+				update(delta);
+				delta--;
+			}
+			render();
+			frames++;
 			
-			glfwPollEvents();
+			if (System.currentTimeMillis() - timer > 1000) {
+				System.out.println("FPS: " + frames);
+				timer += 1000;
+				frames = 0;
+			}
 		}
+		
+		// cleanup
+		glfwFreeCallbacks(window);
+		Logger.close();
+	}
+	
+	private void update(double delta) {
+		glfwPollEvents();
+	}
+	
+	private void render() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		// test render
+		p.use();
+		p.setUniform("texture1", 0);
+		r.render();
+		p.unbind();
+
+		glfwSwapBuffers(window);
 	}
 	
 	public static void main(String[] args) {
 		new Main().run();
-		@SuppressWarnings("unused")
-		Logger logger = new Logger();
+		new Logger();
 	}
 
 }

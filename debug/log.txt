@@ -1,0 +1,1 @@
+2019-11-10T00:43:07.797 Loaded texture: "res/test.png"
