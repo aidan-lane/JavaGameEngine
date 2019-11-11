@@ -20,7 +20,8 @@ public class TexturedRect extends Rect {
 	
 	@Override
 	public void render() {
-		this.render(0.0f, 0.0f, 1.0f, 1.0f, 1, 1);
+		this.render(0.0f, 0.0f, this.texture.getWidth(), this.texture.getHeight(), 
+				this.texture.getWidth(), this.texture.getHeight());
 	}
 	
 	/**

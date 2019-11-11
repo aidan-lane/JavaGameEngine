@@ -1,6 +1,8 @@
 package me.main;
 
 import org.lwjgl.*;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
@@ -19,6 +21,11 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Main implements Runnable {
 	
 	private long window;
+	private static final int VIRTUAL_WIDTH = 1280;
+	private static final int VIRTUAL_HEIGHT = 720;
+	
+	private static int SCREEN_WIDTH;
+	private static int SCREEN_HEIGHT;
 	
 	public static TextureManager textures = new TextureManager();
 	
@@ -36,7 +43,7 @@ public class Main implements Runnable {
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		
-		window = glfwCreateWindow(1280, 720, "Game", NULL, NULL);
+		window = glfwCreateWindow(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, "Game", NULL, NULL);
 		if (window == NULL)
 			throw new RuntimeException("Failed to create GLFW window");
 		
@@ -51,7 +58,9 @@ public class Main implements Runnable {
 			
 			glfwGetWindowSize(window, pWidth, pHeight);
 			
-			//GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			SCREEN_WIDTH = vidmode.width();
+			SCREEN_HEIGHT = vidmode.height();
 			glfwSetWindowPos(
 				window,
 				(pWidth.get(0) / 4),
@@ -73,10 +82,37 @@ public class Main implements Runnable {
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 		
 		glMatrixMode(GL_PROJECTION);
-		glOrtho(0.f, 1280, 720, 0.f, -1.f, 1.f);
+		glOrtho(0.f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 0.f, -1.f, 1.f);
 		glMatrixMode(GL_MODELVIEW);
 		
 		GL13.glActiveTexture(0); 
+		
+		// window resize event
+		glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+				float targetAspectRatio = (float) VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
+				int tWidth = width;
+				int tHeight = (int)(tWidth / targetAspectRatio + 0.5f);
+				if (tHeight > SCREEN_HEIGHT) {
+					tHeight = SCREEN_HEIGHT;
+					tWidth = (int)(tHeight * targetAspectRatio + 0.5f);
+				}
+				
+				float wRatio = (float) VIRTUAL_WIDTH / tWidth;
+				float hRatio = (float) VIRTUAL_HEIGHT / tHeight;
+				
+				glViewport(0, 0, width, height);
+				
+				glMatrixMode(GL_PROJECTION);
+				glPushMatrix();
+				glLoadIdentity();
+				glOrtho(0, VIRTUAL_WIDTH*wRatio, VIRTUAL_HEIGHT*hRatio, 0, -1, 1);
+				glMatrixMode(GL_MODELVIEW);
+				glPushMatrix();
+				glLoadIdentity();
+			}
+		});
 		
 		// testing
 		r = new TexturedRect(50, 50, 100, 100, Main.textures.getResource("res/test.png"));
