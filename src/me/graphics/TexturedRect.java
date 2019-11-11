@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL20.*;
 public class TexturedRect extends Rect {
 	
 	private int textureID;
+	private int texWidth;
+	private int texHeight;
 	
 	public TexturedRect(float x, float y, float w, float h, int tex) {
 		super(x, y, w, h);
