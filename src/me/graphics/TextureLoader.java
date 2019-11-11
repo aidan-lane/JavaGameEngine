@@ -28,7 +28,11 @@ public class TextureLoader {
 		return null;
 	}
 	
-	public static int loadTexture(String filename) {
+	/**
+	 * @param filename complete path of texture png
+	 * @return Texture object containing OpenGL id and size
+	 */
+	public static Texture loadTexture(String filename) {
 		BufferedImage image = loadImage(filename);
 		int width = image.getWidth();
 		int height = image.getHeight();
@@ -57,9 +61,12 @@ public class TextureLoader {
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
-		return textureID;
+		return new Texture(textureID, image.getWidth(), image.getHeight());
 	}
 	
+	/**
+	 * @param id unloads texture of with specified id
+	 */
 	public static void unloadTexture(int id) {
 		GL11.glDeleteTextures(id);
 	}

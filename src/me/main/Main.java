@@ -22,7 +22,6 @@ public class Main implements Runnable {
 	
 	public static TextureManager textures = new TextureManager();
 	
-	int tex;
 	TexturedRect r;
 	
 	ShaderProgram p;
@@ -80,8 +79,7 @@ public class Main implements Runnable {
 		GL13.glActiveTexture(0); 
 		
 		// testing
-		tex = Main.textures.getResource("res/test.png");
-		r = new TexturedRect(50, 50, 100, 100, tex);
+		r = new TexturedRect(50, 50, 100, 100, Main.textures.getResource("res/test.png"));
 		p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
 		
 		int fps = 60;
