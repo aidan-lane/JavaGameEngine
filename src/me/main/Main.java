@@ -24,7 +24,6 @@ public class Main implements Runnable {
 	private static final int VIRTUAL_WIDTH = 1280;
 	private static final int VIRTUAL_HEIGHT = 720;
 	
-	private static int SCREEN_WIDTH;
 	private static int SCREEN_HEIGHT;
 	
 	public static TextureManager textures = new TextureManager();
@@ -59,8 +58,8 @@ public class Main implements Runnable {
 			glfwGetWindowSize(window, pWidth, pHeight);
 			
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			SCREEN_WIDTH = vidmode.width();
 			SCREEN_HEIGHT = vidmode.height();
+			
 			glfwSetWindowPos(
 				window,
 				(pWidth.get(0) / 4),
@@ -79,7 +78,7 @@ public class Main implements Runnable {
 		// configure global render options
 		GL.createCapabilities();
 		
-		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
 		glMatrixMode(GL_PROJECTION);
 		glOrtho(0.f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 0.f, -1.f, 1.f);
