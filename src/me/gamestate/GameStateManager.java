@@ -36,8 +36,20 @@ public class GameStateManager {
 	public void setState(String state) {
 		if (!states.containsKey(state))
 			throw new RuntimeException("State does not exist");
-		states.get(currentState).exit();
+		
+		if (currentState != null)
+			states.get(currentState).exit();
 		this.currentState = state;
 		states.get(currentState).init();
+	}
+	
+	public void update(double delta) {
+		if (states.size() > 0 && states.containsKey(currentState))
+			states.get(currentState).update(delta);
+	}
+	
+	public void render() {
+		if (states.size() > 0 && states.containsKey(currentState))
+			states.get(currentState).render();
 	}
 }

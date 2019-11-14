@@ -7,6 +7,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import me.assetmanagers.TextureManager;
+import me.gamestate.GameStateManager;
 import me.graphics.ShaderProgram;
 import me.graphics.TexturedRect;
 
@@ -26,10 +27,12 @@ public class Main implements Runnable {
 	
 	private static int SCREEN_HEIGHT;
 	
+	private GameStateManager gsm;
+	
 	public static TextureManager textures = new TextureManager();
 	
+	// testing
 	TexturedRect r;
-	
 	ShaderProgram p;
 	
 	private void init() {
@@ -66,6 +69,10 @@ public class Main implements Runnable {
 				(pHeight.get(0) / 4)
 			);
 		}
+		
+		gsm = new GameStateManager();
+		gsm.addState("res/states/game.js", "game");
+		gsm.setState("game");
 		
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1); // enable v-sync

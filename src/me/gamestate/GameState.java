@@ -22,11 +22,19 @@ public class GameState {
 	}
 	
 	public void init() {
-		
+		try {
+			invocable.invokeFunction("init", this);
+		} catch (NoSuchMethodException | ScriptException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void update(double delta) {
-		
+		try {
+			invocable.invokeFunction("update");
+		} catch (NoSuchMethodException | ScriptException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void render() {
