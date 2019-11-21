@@ -1,1 +1,1 @@
-2019-11-12T23:21:28.852 Loaded texture: "res/test.png"
+2019-11-20T23:09:13.865 Loaded texture: "res/test.png"

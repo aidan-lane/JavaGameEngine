@@ -71,8 +71,6 @@ public class Main implements Runnable {
 		}
 		
 		gsm = new GameStateManager();
-		gsm.addState("res/states/game.js", "game");
-		gsm.setState("game");
 		
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1); // enable v-sync
@@ -157,11 +155,14 @@ public class Main implements Runnable {
 	}
 	
 	private void update(double delta) {
+		this.gsm.update(delta);
 		glfwPollEvents();
 	}
 	
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		this.gsm.render();
 		
 		// test render
 		p.use();
