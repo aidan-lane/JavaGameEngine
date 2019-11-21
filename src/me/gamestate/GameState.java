@@ -1,26 +1,11 @@
 package me.gamestate;
 
-public class GameState {
+public abstract class GameState {
 
-	private GameStateManager gsm;
+	protected GameStateManager gsm;
 	
-	public GameState(String path, GameStateManager gsm) {
-		this.gsm = gsm;
-	}
-	
-	public void init() {
-	
-	}
-	
-	public void update(double delta) {
-		
-	}
-	
-	public void render() {
-		
-	}
-	
-	public void exit() {
-		
-	}
+	public abstract void init();	
+	public abstract void update(double delta);
+	public abstract void render();
+	public abstract void exit();
 }

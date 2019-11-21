@@ -3,31 +3,26 @@ package me.gamestate;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 public class GameStateManager {
 
 	private Map<String, GameState> states;
 	private String currentState;
-	public ScriptEngine engine;
 	
 	/**
 	 * GameStateManager controls the current state of the game
 	 */
 	public GameStateManager() {
 		states = new HashMap<>();
-		engine = new ScriptEngineManager().getEngineByName("nashorn");
 	}
 	
 	/**
 	 * @param path Path to JavaScript state file
 	 * @param name Name of state to be referenced by other states
 	 */
-	public void addState(String path, String name) {
+	public void addState(GameState state, String name) {
 		if (states.containsKey(name))
 			throw new RuntimeException("State already exists");
-		states.put(name, new GameState(path, this));
+		states.put(name, state);
 	}
 	
 	/**
