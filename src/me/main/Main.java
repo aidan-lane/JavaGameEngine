@@ -7,6 +7,8 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import me.assetmanagers.TextureManager;
+import me.components.GraphicsComponent;
+import me.entity.Entity;
 import me.gamestate.GameStateManager;
 import me.graphics.ShaderProgram;
 import me.graphics.TexturedRect;

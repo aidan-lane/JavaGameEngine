@@ -1,5 +1,12 @@
 package me.components;
 
+import me.entity.Entity;
+
 public abstract class Component {
-	protected int id;
+	
+	public Entity entity;
+	
+	public Component(Entity e) {
+		this.entity = e;
+	}
 }
