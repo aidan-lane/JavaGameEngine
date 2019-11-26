@@ -73,6 +73,8 @@ public class Main implements Runnable {
 		}
 		
 		gsm = new GameStateManager();
+		gsm.addState("res/states/game.lua", "game");
+		gsm.setState("game");
 		
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1); // enable v-sync

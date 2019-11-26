@@ -3,26 +3,32 @@ package me.gamestate;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.lib.jse.JsePlatform;
+
 public class GameStateManager {
 
 	private Map<String, GameState> states;
 	private String currentState;
+	
+	public Globals globals;
 	
 	/**
 	 * GameStateManager controls the current state of the game
 	 */
 	public GameStateManager() {
 		states = new HashMap<>();
+		globals = JsePlatform.standardGlobals();
 	}
 	
 	/**
 	 * @param path Path to JavaScript state file
 	 * @param name Name of state to be referenced by other states
 	 */
-	public void addState(GameState state, String name) {
+	public void addState(String stateFile, String name) {
 		if (states.containsKey(name))
 			throw new RuntimeException("State already exists");
-		states.put(name, state);
+		states.put(name, new GameState(stateFile, this));
 	}
 	
 	/**
