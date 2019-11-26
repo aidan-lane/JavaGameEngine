@@ -30,4 +30,8 @@ public class Entity {
 	public String getType() {
 		return type;
 	}
+	
+	public int getUID() {
+		return this.UID;
+	}
 }

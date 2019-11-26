@@ -1,3 +1,6 @@
-function init()
-  print('hello2!')
-end
+game = {
+  init = function()
+    print('hello2!')
+  end
+
+}

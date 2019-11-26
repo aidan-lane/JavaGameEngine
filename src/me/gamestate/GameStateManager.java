@@ -28,7 +28,7 @@ public class GameStateManager {
 	public void addState(String stateFile, String name) {
 		if (states.containsKey(name))
 			throw new RuntimeException("State already exists");
-		states.put(name, new GameState(stateFile, this));
+		states.put(name, new GameState(name, stateFile, this));
 	}
 	
 	/**
