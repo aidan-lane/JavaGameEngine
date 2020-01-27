@@ -1,4 +1,4 @@
-package me.main;
+package main;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -6,12 +6,10 @@ import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
-import me.assetmanagers.TextureManager;
-import me.components.GraphicsComponent;
-import me.entity.Entity;
-import me.gamestate.GameStateManager;
-import me.graphics.ShaderProgram;
-import me.graphics.TexturedRect;
+import gamestate.GameStateManager;
+import gfx.ShaderProgram;
+import gfx.TexturedRect;
+import manager.TextureManager;
 
 import java.nio.*;
 

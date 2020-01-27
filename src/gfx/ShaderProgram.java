@@ -1,4 +1,4 @@
-package me.graphics;
+package gfx;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -7,7 +7,7 @@ import java.io.FileReader;
 
 import org.lwjgl.opengl.GL20;
 
-import me.main.Logger;
+import main.Logger;
 
 public class ShaderProgram {
 

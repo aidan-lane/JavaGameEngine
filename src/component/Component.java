@@ -1,8 +1,8 @@
-package me.components;
+package component;
 
 import org.luaj.vm2.LuaValue;
 
-import me.entity.Entity;
+import entity.Entity;
 
 public abstract class Component {
 	

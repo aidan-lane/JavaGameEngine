@@ -1,4 +1,4 @@
-package me.graphics;
+package gfx;
 
 public class Texture {
 

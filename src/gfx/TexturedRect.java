@@ -1,4 +1,4 @@
-package me.graphics;
+package gfx;
 
 import static org.lwjgl.opengl.GL20.*;
 

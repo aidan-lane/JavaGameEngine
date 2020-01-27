@@ -1,8 +1,8 @@
-package me.assetmanagers;
+package manager;
 
-import me.graphics.Texture;
-import me.graphics.TextureLoader;
-import me.main.Logger;
+import gfx.Texture;
+import gfx.TextureLoader;
+import main.Logger;
 
 public class TextureManager extends ResourceManager<Texture> {
 

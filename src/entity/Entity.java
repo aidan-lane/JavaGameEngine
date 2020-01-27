@@ -1,9 +1,9 @@
-package me.entity;
+package entity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import me.components.Component;
+import component.Component;
 
 public class Entity {
 

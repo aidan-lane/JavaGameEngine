@@ -1,15 +1,16 @@
-package me.gamestate;
+package gamestate;
 
 import org.luaj.vm2.LuaValue;
 
-import me.components.MovementComponent;
-import me.entity.Entity;
+import component.MovementComponent;
+import entity.Entity;
 
 public class GameState {
 
 	private GameStateManager gsm;
 	private LuaValue stateValue;
 	
+	// unique ID set to each newly created entity
 	private int curUID;
 	
 	public GameState(String name, String stateFile, GameStateManager gsm) {
@@ -20,6 +21,7 @@ public class GameState {
 	}
 	
 	public void init() {
+		this.curUID = 0;
 		LuaValue initFunc = stateValue.get("init");
 		initFunc.call();
 		
@@ -43,8 +45,12 @@ public class GameState {
 		Entity entity = new Entity(curUID++, type);
 		LuaValue entityTable = gsm.globals.get(type);
 		
-		MovementComponent mc = new MovementComponent(entity, entityTable.get("MovementComponent"));
-		entity.add(mc);
+		LuaValue movementTableVal = entityTable.get("MovementComponent");
+		if (movementTableVal.isvalidkey()) {
+			MovementComponent mc = new MovementComponent(entity, movementTableVal);
+			entity.add(mc);
+			// add component to its respective system
+		}
 		
 		return entity;
 	}

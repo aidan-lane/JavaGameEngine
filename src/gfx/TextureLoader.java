@@ -1,4 +1,4 @@
-package me.graphics;
+package gfx;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import me.main.Logger;
+import main.Logger;
 
 import static org.lwjgl.opengl.GL20.*;
 
