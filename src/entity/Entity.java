@@ -10,7 +10,7 @@ public class Entity {
 	private int UID;
 	private String type;
 	private Map<Class<?>, Component> components;
-	
+
 	public Entity(int UID, String type) {
 		this.UID = UID;
 		this.type = type;
