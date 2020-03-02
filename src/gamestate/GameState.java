@@ -2,8 +2,12 @@ package gamestate;
 
 import org.luaj.vm2.LuaValue;
 
+import component.CollisionComponent;
+import component.Component;
+import component.GraphicsComponent;
 import component.MovementComponent;
 import entity.Entity;
+import system.CollisionSystem;
 
 public class GameState {
 
@@ -12,6 +16,9 @@ public class GameState {
 	
 	// unique ID set to each newly created entity
 	private int curUID;
+	
+	// Systems
+	CollisionSystem collisionSystem = new CollisionSystem();
 	
 	public GameState(String name, String stateFile, GameStateManager gsm) {
 		this.gsm = gsm;
@@ -29,7 +36,7 @@ public class GameState {
 	}
 	
 	public void update(double delta) {
-		
+		collisionSystem.update(delta);
 	}
 	
 	public void render() {
@@ -47,9 +54,22 @@ public class GameState {
 		
 		LuaValue movementTableVal = entityTable.get("MovementComponent");
 		if (movementTableVal.isvalidkey()) {
-			MovementComponent mc = new MovementComponent(entity, movementTableVal);
+			Component mc = new MovementComponent(entity, movementTableVal);
 			entity.add(mc);
 			// add component to its respective system
+		}
+		
+		LuaValue graphicsTableVal = entityTable.get("GraphicsComponent");
+		if (graphicsTableVal.isvalidkey()) {
+			Component gc = new GraphicsComponent(entity, graphicsTableVal);
+			entity.add(gc);
+		}
+		
+		LuaValue collisionTableVal = entityTable.get("CollisionComponent");
+		if (collisionTableVal.isvalidkey()) {
+			Component cc = new CollisionComponent(entity, collisionTableVal);
+			entity.add(cc);
+			collisionSystem.add(cc);
 		}
 		
 		return entity;

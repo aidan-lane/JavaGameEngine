@@ -22,8 +22,8 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Main implements Runnable {
 	
 	private long window;
-	private static final int VIRTUAL_WIDTH = 1280;
-	private static final int VIRTUAL_HEIGHT = 720;
+	public static final int VIRTUAL_WIDTH = 1280;
+	public static final int VIRTUAL_HEIGHT = 720;
 	
 	private static int SCREEN_HEIGHT;
 	
