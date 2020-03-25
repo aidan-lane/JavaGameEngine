@@ -1,4 +1,4 @@
-#version 120 core
+#version 120
 
 void main() {
 	gl_Position = ftransform(); //Transform the vertex position
