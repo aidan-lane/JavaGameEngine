@@ -1,6 +1,6 @@
 package gamestate;
 
-import map.Map;
+import map.StartingRoom;
 
 public class Game extends GameState {
 	
@@ -9,8 +9,7 @@ public class Game extends GameState {
 	}
 
 	public void init() {
-		Map map = new Map(10, 10, 10);
-		map.generateLayout();
+		StartingRoom room = new StartingRoom("res/rooms/StartingRoom.txt");
 	}
 
 	public void exit() {

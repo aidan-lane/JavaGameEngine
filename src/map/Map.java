@@ -17,7 +17,7 @@ public class Map {
 		this.roomCount = roomCount;
 	}
 	
-	public void generateLayout() {
+	public void generateRooms() {
 		for (int i = 0; i < roomCount; i++) {
 			// todo
 		}
