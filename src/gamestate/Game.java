@@ -4,12 +4,14 @@ import map.StartingRoom;
 
 public class Game extends GameState {
 	
+	StartingRoom room = new StartingRoom("res/rooms/StartingRoom.txt");
+	
 	public Game(GameStateManager gsm) {
 		this.gsm = gsm;
 	}
 
 	public void init() {
-		StartingRoom room = new StartingRoom("res/rooms/StartingRoom.txt");
+		
 	}
 
 	public void exit() {
@@ -21,7 +23,7 @@ public class Game extends GameState {
 	}
 
 	public void render() {
-	
+		room.render();
 	}
 
 	public void input() {

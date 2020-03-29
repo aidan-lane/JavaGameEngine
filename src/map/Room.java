@@ -19,22 +19,23 @@ public abstract class Room {
 			e.printStackTrace();
 		}
 		
+		this.width = scanner.nextInt();
+		this.height = scanner.nextInt();
+		this.tileData = new int[width][height];
+		
 		int i = 0;
 		while(scanner.hasNextInt()) {
-			int c = scanner.nextInt();
-			
-			if (i == 0) {
-				width = c;
-			}
-			else if (i == 1) {
-				height = c;
-				this.tileData = new int[width][height];
-			}
-			else {
-				tileData[(i - 2) % width][(i - 2) / width] = c;
-			}
-			
+			tileData[i % width][i / width] = scanner.nextInt();
 			i++;
+		}
+	}
+	
+	public void render() {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int tileType = tileData[i][j];
+				Map.textureMap.renderTile(tileType, i*64, j*64, 64, 64);
+			}
 		}
 	}
 }
