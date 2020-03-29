@@ -1,12 +1,25 @@
 package map;
 
-import gfx.TextureAtlas;
+import java.util.ArrayList;
 
+/**
+ * Map contains data about room layouts in the randomized dungeon 
+ */
 public class Map {
 
-	TextureAtlas textureMap = new TextureAtlas("res/textures/map.png", 32, 32);
+	// TextureAtlas textureMap = new TextureAtlas("res/textures/map.png", 32, 32);
 	
-	public Map() {
-		
+	private int roomCount;
+	private ArrayList<Room> rooms = new ArrayList<>();
+	
+	
+	public Map(int mapWidth, int mapHeight, int roomCount) {
+		this.roomCount = roomCount;
+	}
+	
+	public void generateLayout() {
+		for (int i = 0; i < roomCount; i++) {
+			// todo
+		}
 	}
 }

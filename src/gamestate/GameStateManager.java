@@ -3,54 +3,56 @@ package gamestate;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.lib.jse.JsePlatform;
-
 public class GameStateManager {
 
 	private Map<String, GameState> states;
 	private String currentState;
-	
-	public Globals globals;
 	
 	/**
 	 * GameStateManager controls the current state of the game
 	 */
 	public GameStateManager() {
 		states = new HashMap<>();
-		globals = JsePlatform.standardGlobals();
 	}
 	
 	/**
-	 * @param path Path to JavaScript state file
-	 * @param name Name of state to be referenced by other states
+	 * @param stateName Name of state to be referenced by other states
+	 * @param state, new state object
 	 */
-	public void addState(String stateFile, String name) {
-		if (states.containsKey(name))
+	public void addState(String stateName, GameState state) {
+		if (states.containsKey(stateName))
 			throw new RuntimeException("State already exists");
-		states.put(name, new GameState(name, stateFile, this));
+		
+		states.put(stateName, state);
 	}
 	
 	/**
 	 * @param state Name of state to switch to
+	 * @throw RuntimeException if state does not exist
 	 */
-	public void setState(String state) {
-		if (!states.containsKey(state))
+	public void setState(String stateName) {
+		if (!states.containsKey(stateName))
 			throw new RuntimeException("State does not exist");
 		
 		if (currentState != null)
 			states.get(currentState).exit();
-		this.currentState = state;
+		
+		this.currentState = stateName;
 		states.get(currentState).init();
 	}
 	
 	public void update(double delta) {
-		if (states.size() > 0 && states.containsKey(currentState))
+		if (states.containsKey(currentState))
 			states.get(currentState).update(delta);
 	}
 	
 	public void render() {
-		if (states.size() > 0 && states.containsKey(currentState))
+		if (states.containsKey(currentState))
 			states.get(currentState).render();
+	}
+	
+	public void input() {
+		if (states.containsKey(this.currentState))
+			states.get(currentState).input();
 	}
 }

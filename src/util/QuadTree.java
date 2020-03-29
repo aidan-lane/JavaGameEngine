@@ -3,7 +3,7 @@ package util;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import component.CollisionComponent;
+import entity.GameObject;
 
 public class QuadTree {
 
@@ -13,7 +13,7 @@ public class QuadTree {
 	private int level;
 	private Rectangle bounds;
 	
-	private ArrayList<CollisionComponent> objects;
+	private ArrayList<GameObject> objects;
 	private QuadTree[] nodes;
 	
 	public QuadTree(int level, Rectangle bounds) {
@@ -73,17 +73,17 @@ public class QuadTree {
 		return index;
 	}
 	
-	public void insert(CollisionComponent c) {
+	public void insert(GameObject o) {
 		if(this.nodes[0] != null) {
-			int index = getIndex(c.getBounds());
+			int index = getIndex(o.getBounds());
 			
 			if(index != -1) {
-				nodes[index].insert(c);
+				nodes[index].insert(o);
 				return;
 			}
 		}
 		
-		this.objects.add(c);
+		this.objects.add(o);
 		
 		if(objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
 			if(nodes[0] == null) {
@@ -101,10 +101,10 @@ public class QuadTree {
 		}
 	}
 	
-	public ArrayList<CollisionComponent> retrieve(ArrayList<CollisionComponent> returnObjects, CollisionComponent c) {
-		int index = getIndex(c.getBounds());
+	public ArrayList<GameObject> retrieve(ArrayList<GameObject> returnObjects, GameObject o) {
+		int index = getIndex(o.getBounds());
 		if(index != -1 && nodes[0] != null) {
-			nodes[index].retrieve(returnObjects, c);
+			nodes[index].retrieve(returnObjects, o);
 		}
 		
 		returnObjects.addAll(objects);
