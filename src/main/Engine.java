@@ -53,9 +53,19 @@ import gamestate.Menu;
 import gfx.ShaderProgram;
 import gfx.TexturedRect;
 import manager.TextureManager;
+import util.Logger;
 
-public class Main implements Runnable {
+/**
+ * Main entrypoint for running the engine
+ * Handles window setup and opengl initialization
+ * 
+ * @author lanea3
+ * @version 0.0.1
+ * @since 2/20/21
+ */
+public class Engine implements Runnable {
 	
+	// Window options
 	private long window;
 	public static final int VIRTUAL_WIDTH = 1280;
 	public static final int VIRTUAL_HEIGHT = 720;
@@ -64,16 +74,18 @@ public class Main implements Runnable {
 	
 	private GameStateManager gsm;
 	
-	// static managers
+	// Static managers
+	public static Logger logger = new Logger();
 	public static TextureManager textures = new TextureManager();
 	
 	// testing
 	TexturedRect r;
 	ShaderProgram p;
 	
-	private void init() {
-		System.out.println("Running LWJGL Version " + Version.getVersion());
-		
+	/**
+	 * Intialize window using glfw
+	 */
+	private void initWindow() {		
 		if (!glfwInit())
 			throw new IllegalStateException("Cannot initialize GLFW");
 		
@@ -106,20 +118,27 @@ public class Main implements Runnable {
 			);
 		}
 		
-		gsm = new GameStateManager();
-		gsm.addState("MENU", new Menu(gsm));
-		gsm.addState("GAME", new Game(gsm));
-		gsm.setState("GAME");
-		
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1); // enable v-sync
 		glfwShowWindow(window);
 	}
 	
-	public void run() {
-		init();
-		
-		// configure global render options
+	/**
+	 * Initialize any default gamestates
+	 */
+	private void initGameState() {
+		gsm = new GameStateManager();
+		gsm.addState("MENU", new Menu(gsm));
+		gsm.addState("GAME", new Game(gsm));
+		gsm.setState("GAME");
+	}
+	
+	/**
+	 * Initializes default opengl settings and  configures
+	 * logic for resizable graphics
+	 */
+	private void initOpenGL() {
+		// Configure global render options
 		GL.createCapabilities();
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -130,7 +149,10 @@ public class Main implements Runnable {
 		
 		GL13.glActiveTexture(0); 
 		
-		// window resize event
+		/**
+		 * Callback for when window is resized.
+		 * Handles graphics scaling
+		 */
 		glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
@@ -150,17 +172,30 @@ public class Main implements Runnable {
 				glMatrixMode(GL_PROJECTION);
 				glPushMatrix();
 				glLoadIdentity();
+				
 				glOrtho(0, VIRTUAL_WIDTH*wRatio, VIRTUAL_HEIGHT*hRatio, 0, -1, 1);
 				glMatrixMode(GL_MODELVIEW);
 				glPushMatrix();
 				glLoadIdentity();
 			}
 		});
+	}
+	
+	/**
+	 * Calls initialization functions and handles game loop
+	 * logic. Called on a new thread
+	 */
+	public void run() {
+		Engine.logger.log("Running LWJGL Version " + Version.getVersion());
+		this.initWindow();
+		this.initGameState();
+		this.initOpenGL();
 		
 		// testing
-		r = new TexturedRect(50, 50, 100, 100, Main.textures.getResource("res/test.png"));
+		r = new TexturedRect(50, 50, 100, 100, Engine.textures.getResource("res/test.png"));
 		p = new ShaderProgram("res/shaders/test.vert", "res/shaders/test.frag");
 		
+		// Game loop
 		int fps = 60;
 		double ticksPerSecond = 1000000000 / fps;
 		double delta = 0;
@@ -182,22 +217,27 @@ public class Main implements Runnable {
 			frames++;
 			
 			if (System.currentTimeMillis() - timer > 1000) {
-				System.out.println("FPS: " + frames);
+				Engine.logger.log("FPS: " + frames);
 				timer += 1000;
 				frames = 0;
 			}
 		}
 		
-		// cleanup
-		glfwFreeCallbacks(window);
-		Logger.close();
+		this.cleanup();
 	}
 	
+	/**
+	 * Main game update loop
+	 * @param delta: time difference bewteen frames
+	 */
 	private void update(double delta) {
 		this.gsm.update(delta);
 		glfwPollEvents();
 	}
 	
+	/**
+	 * Main render function for rendering game state manager
+	 */
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
@@ -212,9 +252,20 @@ public class Main implements Runnable {
 		glfwSwapBuffers(window);
 	}
 	
-	public static void main(String[] args) {
-		new Main().run();
-		new Logger();
+	/**
+	 * Frees any used memory and currently open streams
+	 */
+	private void cleanup() {
+		// cleanup
+		glfwFreeCallbacks(window);
+		Engine.logger.close();
 	}
-
+	
+	/**
+	 * Main entry point
+	 * @param args should be null
+	 */
+	public static void main(String[] args) {
+		new Engine().run();
+	}
 }

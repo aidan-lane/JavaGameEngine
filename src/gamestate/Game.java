@@ -1,10 +1,6 @@
 package gamestate;
 
-import map.StartingRoom;
-
 public class Game extends GameState {
-	
-	StartingRoom room = new StartingRoom("res/rooms/StartingRoom.txt");
 	
 	public Game(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -23,7 +19,7 @@ public class Game extends GameState {
 	}
 
 	public void render() {
-		room.render();
+		
 	}
 
 	public void input() {

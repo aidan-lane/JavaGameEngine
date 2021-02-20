@@ -1,13 +1,32 @@
 package gfx;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform2f;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 import org.lwjgl.opengl.GL20;
 
-import main.Logger;
+import main.Engine;
 
 public class ShaderProgram {
 
@@ -32,15 +51,15 @@ public class ShaderProgram {
 		glCompileShader(fShader);
 		
 		// output compile status
-		Logger.LOG(glGetShaderInfoLog(vShader, glGetShaderi(vShader, GL_INFO_LOG_LENGTH)));
-		Logger.LOG(glGetShaderInfoLog(fShader, glGetShaderi(fShader, GL_INFO_LOG_LENGTH)));
+		Engine.logger.log(glGetShaderInfoLog(vShader, glGetShaderi(vShader, GL_INFO_LOG_LENGTH)));
+		Engine.logger.log(glGetShaderInfoLog(fShader, glGetShaderi(fShader, GL_INFO_LOG_LENGTH)));
 		
 		// create program and link shaders
 		program = glCreateProgram();
 		glAttachShader(program, vShader);
 		glAttachShader(program, fShader);
 		glLinkProgram(program);
-		Logger.LOG(glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
+		Engine.logger.log(glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
 		
 		// no longer need individual shaders
 		glDeleteShader(vShader);

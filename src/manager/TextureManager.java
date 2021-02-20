@@ -2,21 +2,15 @@ package manager;
 
 import gfx.Texture;
 import gfx.TextureLoader;
-import main.Logger;
+import main.Engine;
 
+/**
+ * Static manager for loading texture assets
+ */
 public class TextureManager extends ResourceManager<Texture> {
 
-	/**
-	 * @param filename Filename of texture including directory path
-	 * @return Texture object containing id and size information
-	 */
-	@Override
-	public Texture getResource(String filename) {
-		Texture tex = super.getResource(filename);
-		if (tex != null) return tex;
-		
-		Logger.LOG("Loaded texture: \"" + filename + "\"");
-		Texture texture = TextureLoader.loadTexture(filename);
-		return texture;
+	protected Texture loadResource(String file) {
+		Engine.logger.log("Loaded texture: \"" + file + "\"");
+		return TextureLoader.loadTexture(file);
 	}
 }

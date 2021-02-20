@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
-import main.Main;
+import main.Engine;
 
 public class TextureAtlas {
 	
@@ -21,7 +21,7 @@ public class TextureAtlas {
 	private int tilesPerWidth;
 	
 	public TextureAtlas(String path, int tileWidth, int tileHeight) {
-		texture = Main.textures.getResource(path);
+		texture = Engine.textures.getResource(path);
 		
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;

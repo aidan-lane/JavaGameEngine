@@ -73,6 +73,10 @@ public class QuadTree {
 		return index;
 	}
 	
+	/**
+	 * Inserts a game object into the quad tree
+	 * @param o GameObject to be inserted
+	 */
 	public void insert(GameObject o) {
 		if(this.nodes[0] != null) {
 			int index = getIndex(o.getBounds());
@@ -101,6 +105,12 @@ public class QuadTree {
 		}
 	}
 	
+	/**
+	 * Get's objects within given object's quad
+	 * @param returnObjects List of game objects
+	 * @param o Game object to be centered on
+	 * @return ArrayList<GameObject> list of new objects in quad
+	 */
 	public ArrayList<GameObject> retrieve(ArrayList<GameObject> returnObjects, GameObject o) {
 		int index = getIndex(o.getBounds());
 		if(index != -1 && nodes[0] != null) {
